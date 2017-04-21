@@ -55,21 +55,93 @@ export default Ember.Service.extend(Ember.Evented, {
 				})(window,document,"static.olark.com/jsclient/loader.js");
 
 			window.olark.identify(initSettings.identity);
-
-
 			Ember.run(null, resolve);
 		});
 		this.olark = window.olark;
 		this.configure = window.olark.configure;
+		let events = [
+			"box.onHide",
+			"box.onShow",
+			"box.onExpand",
+			"box.onShrink",
+			"chat.onReady",
+			"chat.onOperatorsAvailable",
+			"chat.onOperatorsAway",
+			"chat.onBeginConversation",
+			"chat.onMessageToOperator",
+			"chat.onMessageToVisitor",
+			"chat.onCommandFromOperator",
+			"chat.onOfflineMessageToOperator"
+		];
+
+		events.forEach((eventStr) => {
+			let eventSplit = eventStr.split('.');
+			let apiBlock = eventSplit[0];
+			let eventName = eventSplit[1];
+
+			this._bindEvent(apiBlock,eventName);
+		})
 		return this.olarkInitPromise;
   },
-	showChatBox() {
-		this.olark('api.box.show');
+	_bindEvent(apiBlock,eventName) {
+		let eventEmberName = eventName.replace('on','').camelize();
+		this.olark(`api.${apiBlock}.${eventName}`,() => {
+			this.trigger(eventEmberName);
+		});
 	},
-	hideChatBox() {
-		this.olark('api.box.hide');
+	showBox() {
+		return this.olark('api.box.show');
 	},
-	expandChatBox() {
-		this.olark('api.box.expand');
+	hideBox() {
+		return this.olark('api.box.hide');
+	},
+	expandBox() {
+		return this.olark('api.box.expand');
+	},
+	shrinkBox() {
+		return this.olark('api.box.shrink');
+	},
+	setLocale(locale) {
+		return this.olark('api.box.setLocale',locale);
+	},
+	getVisitorDetails() {
+		return new Ember.RSVP.Promise(function(resolve, reject) {
+			this.olark("api.visitor.getDetails", function(details) {
+				Ember.run(null, resolve, details);
+			});
+    });
+	},
+	updateVisitorDetails(snippet) {
+		return this.olark('api.chat.updateVisitorNickname',{
+        snippet: snippet
+    })
+	},
+	updateVisitorStatus(snippet) {
+		return this.olark('api.chat.updateVisitorStatus',{
+        snippet: snippet
+    })
+	},
+	updateVisitorFullName(fullName) {
+		return this.olark('api.visitor.updateFullName',{
+        fullName: fullName
+    })
+	},
+	updateVisitorEmailAddress(emailAddress) {
+		return this.olark('api.visitor.updateEmailAddress',{
+        emailAddress: emailAddress
+    })
+	},
+	updateVisitorPhoneNumber(phoneNumber) {
+		return this.olark('api.visitor.updatePhoneNumber',{
+        phoneNumber: phoneNumber
+    })
+	},
+	updateVisitorCustomFields(fields) {
+		return this.olark('api.visitor.updateCustomFields',fields);
+	},
+	updateVisitorCustomField(fieldName,fieldValue) {
+		let fields = {};
+		field[fieldName] = fieldValue;
+		return this.olark('api.visitor.updateCustomFields',fields);
 	}
 });

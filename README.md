@@ -11,11 +11,44 @@ details on the usage.
 
 The methods implemented are:
 
-* Convenience Methods
-  - showButton
-  - hideButton
-  - showModal
-  - hideModal
+* TODO / Checklist of Implemented
+	- [x] Events (onExpand, onShow, etc.)
+		- [x] box.onHide `on('hide')`
+		- [x] box.onShow `on('show')`
+		- [x] box.onExpand `on('expand')`
+		- [x] box.onShrink `on('shrink')`
+		- [x] chat.onReady `on('ready')`
+		- [x] chat.onOperatorsAvailable `on('operatorsAvailable')`
+		- [x] chat.onOperatorsAway `on('operatorsAway')`
+		- [x] chat.onBeginConversation `on('beginConversation')`
+		- [x] chat.onMessageToOperator `on('messageToOperator')`
+		- [x] chat.onMessageToVisitor `on('messageToVisitor')`
+		- [x] chat.onCommandFromOperator `on('commandFromOperator')`
+		- [x] chat.onOfflineMessageToOperator `on('offlineMessageToOperator')`
+	- [ ] Chat conversation
+		- [ ] setOperatorGroup
+		- [ ] sendMessageToVisitor
+		- [ ] sendNotificationToOperator
+		- [ ] sendNotificationToVisitor
+	- [x] Chat box behavior
+	  - [x] showBox (Shows the button)
+	  - [x] hideBox (Hides the button)
+	  - [x] expandBox (Shows the actual window)
+	  - [x] shrinkBox (Hides the actual window)
+		- [x] setLocale (Sets the language settings for the box)
+	- [x] Visitor information
+		- [x] getVisitorDetails [returns promise]
+		- [x] updateVisitorStatus(string or [array of strings])
+		- [x] updateVisitorNickname(string)
+		- [x] updateVisitorFullName(fullName)
+		- [x] updateVisitorEmail(emailAddress)
+		- [x] updateVisitorPhoneNumber(phoneNumber)
+		- [x] updateVisitorCustomField(fieldName,fieldValue)
+		- [x] updateVisitorCustomFields(pojo)
+	- [ ] Pre-chat survey
+		- [ ] system.ask_for_name
+		- [ ] system.ask_for_email
+		- [ ] system.ask_for_phone
 
 ## Installation
 
@@ -87,10 +120,22 @@ export default Ember.Route.extend({
 
   actions: {
 		openHelp() {
-			this.get("olark").showModal();
+			const olark = this.get('olark');
+
+			olark.on("expand",() => {
+				Ember.debug("Olark Expanded!");
+			});
+
+			olark.expandBox();
 		},
 		closeHelp() {
-			this.get("olark").hideModal();
+			const olark = this.get('olark');
+
+			olark.on("shrink",() => {
+				Ember.debug("Olark Shrunk!");
+			});
+
+			olark.shrinkBox();
 		}
 	}
 });
