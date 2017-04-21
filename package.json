@@ -1,12 +1,15 @@
 {
   "name": "ember-cli-olark",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1",
+  "description": "Initializes and exposes an olark service allowing access to Olark API to your ember application.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "olark",
+    "ember-cli",
+    "ember"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Joshua F. Rountree <joshua.rountree@scripps.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
