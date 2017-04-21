@@ -1,5 +1,4 @@
 import Ember from 'ember';
-
 export default Ember.Service.extend(Ember.Evented, {
 	olark: null,
   olarkInitPromise: null,
@@ -111,7 +110,7 @@ export default Ember.Service.extend(Ember.Evented, {
 			});
     });
 	},
-	updateVisitorDetails(snippet) {
+	updateVisitorNickname(snippet) {
 		return this.olark('api.chat.updateVisitorNickname',{
         snippet: snippet
     })

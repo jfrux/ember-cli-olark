@@ -1,4 +1,6 @@
 {
   "name": "ember-cli-olark",
-  "dependencies": {}
+  "dependencies": {
+    "dot-object": "^1.5.4"
+  }
 }
