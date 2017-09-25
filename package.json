@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-olark",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Initializes and exposes an olark service allowing access to Olark API to your ember application.",
   "keywords": [
     "ember-addon",

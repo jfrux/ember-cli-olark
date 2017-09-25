@@ -5,7 +5,7 @@ export default Ember.Service.extend(Ember.Evented, {
   OlarkInit() {
 		if (this.olarkInitPromise) { return this.olarkInitPromise; }
 
-		const ENV = getOwner(this).factoryFor('config:environment');
+		const ENV = Ember.getOwner(this).factoryFor('config:environment');
 
 		if (ENV.OLARK && ENV.OLARK.skipInit) {
 			this.olarkInitPromise = Ember.RSVP.Promise.resolve('skip init');
